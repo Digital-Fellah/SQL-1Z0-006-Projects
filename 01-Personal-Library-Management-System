@@ -1,0 +1,83 @@
+-- This script creates a database schema for managing a personal library.
+-- It includes tables for books, authors, genres, and loans with relationships defined.
+
+-- Create a table for storing author information
+CREATE TABLE Authors (
+    AuthorID INT PRIMARY KEY,  -- Unique identifier for each author
+    Name VARCHAR(100) NOT NULL -- Author's name
+);
+
+-- Create a table for storing genre information
+CREATE TABLE Genres (
+    GenreID INT PRIMARY KEY,   -- Unique identifier for each genre
+    GenreName VARCHAR(50) NOT NULL -- Name of the genre
+);
+
+-- Create a table for storing book information
+CREATE TABLE Books (
+    BookID INT PRIMARY KEY,    -- Unique identifier for each book
+    Title VARCHAR(100) NOT NULL, -- Title of the book
+    AuthorID INT,              -- Foreign key linking to Authors table
+    GenreID INT,               -- Foreign key linking to Genres table
+    PublishedYear YEAR,        -- Year the book was published
+    FOREIGN KEY (AuthorID) REFERENCES Authors(AuthorID), -- Set foreign key constraint
+    FOREIGN KEY (GenreID) REFERENCES Genres(GenreID)     -- Set foreign key constraint
+);
+
+-- Create a table for storing loan information
+CREATE TABLE Loans (
+    LoanID INT PRIMARY KEY,    -- Unique identifier for each loan
+    BookID INT,                -- Foreign key linking to Books table
+    LoanDate DATE,             -- Date when the book was loaned
+    ReturnDate DATE,           -- Date when the book is returned (can be NULL if not yet returned)
+    FOREIGN KEY (BookID) REFERENCES Books(BookID) -- Set foreign key constraint
+);
+
+-- Insert sample data into the Authors table
+INSERT INTO Authors (AuthorID, Name) VALUES
+(1, 'George Orwell'),
+(2, 'J.K. Rowling');
+
+-- Insert sample data into the Genres table
+INSERT INTO Genres (GenreID, GenreName) VALUES
+(1, 'Dystopian'),
+(2, 'Fantasy');
+
+-- Insert sample data into the Books table
+INSERT INTO Books (BookID, Title, AuthorID, GenreID, PublishedYear) VALUES
+(1, '1984', 1, 1, 1949),
+(2, 'Harry Potter and the Sorcerer\'s Stone', 2, 2, 1997);
+
+-- Insert sample data into the Loans table
+INSERT INTO Loans (LoanID, BookID, LoanDate, ReturnDate) VALUES
+(1, 1, '2024-01-15', NULL),  -- Book '1984' loaned but not yet returned
+(2, 2, '2024-02-01', '2024-02-10'); -- Book 'Harry Potter' returned on '2024-02-10'
+
+
+/*
+EXPLANATION OF THE CODE
+
+The script starts by creating a database schema for a personal library management system.
+It defines four tables: Authors, Genres, Books, and Loans.
+The Authors table stores information about authors with a unique AuthorID.
+The Genres table stores genre information with a unique GenreID.
+The Books table holds details about books, including a title, publication year, and links to Authors and Genres via foreign keys.
+The Loans table records information about book loans, including the loan date and return date, linking to the Books table via a foreign key.
+Sample data is inserted into each table to demonstrate how the schema can be used. This includes two authors, two genres, two books, and two loan records.
+
+*/
+
+
+/*
+NOTIONS COVERED
+
+Describe the components of a database system: Tables, primary keys, and foreign keys.
+Describe the characteristics of a relational database: Use of tables to store data with relationships.
+Define the terminology used for database storage: Primary keys, foreign keys.
+Describe levels of data abstraction used in relational databases: Logical schema design.
+Using Conceptual Data Modeling: Entity-Relationship Diagram (ERD) implied in schema design.
+Using Unique Identifiers, Primary and Foreign Keys: Definition and use of primary and foreign keys.
+Mapping Entities, Columns, and Data Types: Creating tables and defining data types.
+Defining and using Basic Select statements: Demonstrated in SQL INSERT operations, though SELECT statements are not included in this code.
+
+*/
