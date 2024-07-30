@@ -1,0 +1,61 @@
+-- This SQL script sets up the database schema for a simple social media platform.
+-- It includes tables for users, posts, comments, and friendships.
+
+-- Create a table for storing user information
+CREATE TABLE Users (
+    UserID INT PRIMARY KEY AUTO_INCREMENT, -- Unique identifier for each user
+    Username VARCHAR(50) NOT NULL,         -- Username of the user
+    Email VARCHAR(100) NOT NULL,           -- Email address of the user
+    PasswordHash VARCHAR(255) NOT NULL,    -- Hashed password for the user
+    DateJoined DATETIME DEFAULT CURRENT_TIMESTAMP -- Date and time when the user joined
+);
+
+-- Create a table for storing posts made by users
+CREATE TABLE Posts (
+    PostID INT PRIMARY KEY AUTO_INCREMENT,  -- Unique identifier for each post
+    UserID INT NOT NULL,                    -- ID of the user who made the post
+    PostContent TEXT NOT NULL,              -- Content of the post
+    PostDate DATETIME DEFAULT CURRENT_TIMESTAMP, -- Date and time when the post was made
+    FOREIGN KEY (UserID) REFERENCES Users(UserID) -- Foreign key linking to the Users table
+);
+
+-- Create a table for storing comments on posts
+CREATE TABLE Comments (
+    CommentID INT PRIMARY KEY AUTO_INCREMENT, -- Unique identifier for each comment
+    PostID INT NOT NULL,                     -- ID of the post being commented on
+    UserID INT NOT NULL,                     -- ID of the user who made the comment
+    CommentContent TEXT NOT NULL,            -- Content of the comment
+    CommentDate DATETIME DEFAULT CURRENT_TIMESTAMP, -- Date and time when the comment was made
+    FOREIGN KEY (PostID) REFERENCES Posts(PostID),  -- Foreign key linking to the Posts table
+    FOREIGN KEY (UserID) REFERENCES Users(UserID)   -- Foreign key linking to the Users table
+);
+
+-- Create a table for managing user friendships
+CREATE TABLE Friends (
+    UserID1 INT NOT NULL,                    -- ID of the first user in the friendship
+    UserID2 INT NOT NULL,                    -- ID of the second user in the friendship
+    FriendshipDate DATETIME DEFAULT CURRENT_TIMESTAMP, -- Date and time when the friendship was created
+    PRIMARY KEY (UserID1, UserID2),          -- Composite primary key to ensure unique friendships
+    FOREIGN KEY (UserID1) REFERENCES Users(UserID), -- Foreign key linking to the Users table
+    FOREIGN KEY (UserID2) REFERENCES Users(UserID)  -- Foreign key linking to the Users table
+);
+
+
+/*
+EXPLANATION OF THE CODE
+
+Create Users Table: Defines a table to store user details such as UserID, Username, Email, PasswordHash, and DateJoined. UserID is an auto-incremented primary key.
+Create Posts Table: Defines a table to store posts made by users. Each post has a unique PostID, links to the UserID of the user who made the post, and includes content and post date.
+Create Comments Table: Defines a table for comments on posts. Each comment has a unique CommentID, links to both the PostID and UserID, and includes comment content and comment date.
+Create Friends Table: Defines a table to manage friendships between users. Uses a composite primary key (UserID1, UserID2) to ensure that each friendship is unique, with foreign keys linking back to the Users table.
+*/
+
+/*
+NOTIONS COVERED
+
+Database Components: Creating tables to manage users, posts, comments, and friendships.
+Defining a Table in a Database: Describing the structure of tables, including primary and foreign keys.
+Using Unique Identifiers, Primary and Foreign Keys: Implementation of primary and foreign keys.
+Defining Instance and Schema in Relational Databases: Structuring schema with defined relationships between tables.
+Mapping Entities, Columns, and Data Types: Mapping database entities to tables and defining appropriate data types.
+*/
