@@ -1,0 +1,75 @@
+-- This SQL script creates an inventory management system database schema
+-- It includes tables for items, warehouses, inventory records, and suppliers
+
+-- Create the 'Items' table to store details about inventory items
+CREATE TABLE Items (
+    ItemID INT PRIMARY KEY,             -- Unique identifier for each item
+    ItemName VARCHAR(255) NOT NULL,     -- Name of the item
+    ItemDescription TEXT,               -- Description of the item
+    ItemPrice DECIMAL(10, 2) NOT NULL   -- Price of the item
+);
+
+-- Create the 'Warehouses' table to store information about warehouse locations
+CREATE TABLE Warehouses (
+    WarehouseID INT PRIMARY KEY,        -- Unique identifier for each warehouse
+    WarehouseName VARCHAR(255) NOT NULL,-- Name of the warehouse
+    WarehouseLocation VARCHAR(255)      -- Location of the warehouse
+);
+
+-- Create the 'Suppliers' table to keep track of suppliers for items
+CREATE TABLE Suppliers (
+    SupplierID INT PRIMARY KEY,         -- Unique identifier for each supplier
+    SupplierName VARCHAR(255) NOT NULL, -- Name of the supplier
+    SupplierContact VARCHAR(255)        -- Contact information for the supplier
+);
+
+-- Create the 'Inventory' table to track inventory levels for each item in each warehouse
+CREATE TABLE Inventory (
+    InventoryID INT PRIMARY KEY,        -- Unique identifier for each inventory record
+    ItemID INT,                         -- Foreign key referencing Items table
+    WarehouseID INT,                    -- Foreign key referencing Warehouses table
+    Quantity INT NOT NULL,              -- Quantity of the item in the warehouse
+    FOREIGN KEY (ItemID) REFERENCES Items(ItemID),         -- Establish foreign key relationship
+    FOREIGN KEY (WarehouseID) REFERENCES Warehouses(WarehouseID)  -- Establish foreign key relationship
+);
+
+-- Sample SQL query to insert a new item into the 'Items' table
+INSERT INTO Items (ItemID, ItemName, ItemDescription, ItemPrice) 
+VALUES (1, 'Laptop', 'High-performance laptop', 999.99);
+
+-- Sample SQL query to insert a new warehouse into the 'Warehouses' table
+INSERT INTO Warehouses (WarehouseID, WarehouseName, WarehouseLocation) 
+VALUES (1, 'Main Warehouse', '123 Main St, Cityville');
+
+-- Sample SQL query to insert a new supplier into the 'Suppliers' table
+INSERT INTO Suppliers (SupplierID, SupplierName, SupplierContact) 
+VALUES (1, 'Tech Supplies Inc.', 'contact@techsupplies.com');
+
+-- Sample SQL query to add inventory data to the 'Inventory' table
+INSERT INTO Inventory (InventoryID, ItemID, WarehouseID, Quantity) 
+VALUES (1, 1, 1, 50);
+
+
+/*
+EXPLANATION OF THE CODE
+
+This SQL script creates a schema for an inventory management system with four tables: Items, Warehouses, Suppliers, and Inventory.
+The Items table holds data about inventory items, including a unique ID, name, description, and price.
+The Warehouses table contains information about warehouse locations, including a unique ID, name, and location.
+The Suppliers table tracks suppliers, with fields for unique ID, name, and contact information.
+The Inventory table links items with warehouses and tracks the quantity of each item in each warehouse using foreign keys.
+Sample SQL queries are provided to insert data into each table and demonstrate how to populate the database with initial values.
+
+*/
+
+
+/*
+NOTIONS COVERED
+
+Database Components: Creating tables for various entities.
+Tables: Defining structure and relationships between tables.
+Unique Identifiers: Using primary keys.
+Foreign Keys: Establishing relationships between tables.
+SQL: Writing CREATE TABLE, INSERT INTO statements.
+Data Types: Choosing appropriate data types for columns.
+*/
