@@ -1,0 +1,97 @@
+-- This SQL script creates an Event Management System database schema.
+-- It defines tables for Events, Attendees, Venues, and Registrations with their relationships.
+
+-- Create the table to store event details
+CREATE TABLE Events (
+    EventID INT PRIMARY KEY,       -- Unique identifier for each event
+    EventName VARCHAR(100) NOT NULL, -- Name of the event
+    EventDate DATE NOT NULL,         -- Date of the event
+    VenueID INT,                     -- Foreign key referencing Venues
+    CONSTRAINT FK_Venue FOREIGN KEY (VenueID) REFERENCES Venues(VenueID)
+);
+
+-- Create the table to store venue details
+CREATE TABLE Venues (
+    VenueID INT PRIMARY KEY,         -- Unique identifier for each venue
+    VenueName VARCHAR(100) NOT NULL, -- Name of the venue
+    Location VARCHAR(255) NOT NULL   -- Location of the venue
+);
+
+-- Create the table to store attendee details
+CREATE TABLE Attendees (
+    AttendeeID INT PRIMARY KEY,       -- Unique identifier for each attendee
+    AttendeeName VARCHAR(100) NOT NULL, -- Name of the attendee
+    Email VARCHAR(100) NOT NULL UNIQUE -- Email address of the attendee
+);
+
+-- Create the table to store registration details
+CREATE TABLE Registrations (
+    RegistrationID INT PRIMARY KEY,   -- Unique identifier for each registration
+    EventID INT,                      -- Foreign key referencing Events
+    AttendeeID INT,                  -- Foreign key referencing Attendees
+    RegistrationDate DATE NOT NULL,   -- Date of registration
+    CONSTRAINT FK_Event FOREIGN KEY (EventID) REFERENCES Events(EventID),
+    CONSTRAINT FK_Attendee FOREIGN KEY (AttendeeID) REFERENCES Attendees(AttendeeID)
+);
+
+-- Insert sample data into Venues
+INSERT INTO Venues (VenueID, VenueName, Location) VALUES (1, 'Grand Hall', '123 Main St');
+INSERT INTO Venues (VenueID, VenueName, Location) VALUES (2, 'Riverside Pavilion', '456 River Rd');
+
+-- Insert sample data into Events
+INSERT INTO Events (EventID, EventName, EventDate, VenueID) VALUES (1, 'Tech Conference', '2024-09-10', 1);
+INSERT INTO Events (EventID, EventName, EventDate, VenueID) VALUES (2, 'Art Exhibition', '2024-10-05', 2);
+
+-- Insert sample data into Attendees
+INSERT INTO Attendees (AttendeeID, AttendeeName, Email) VALUES (1, 'John Doe', 'john.doe@example.com');
+INSERT INTO Attendees (AttendeeID, AttendeeName, Email) VALUES (2, 'Jane Smith', 'jane.smith@example.com');
+
+-- Insert sample data into Registrations
+INSERT INTO Registrations (RegistrationID, EventID, AttendeeID, RegistrationDate) VALUES (1, 1, 1, '2024-08-01');
+INSERT INTO Registrations (RegistrationID, EventID, AttendeeID, RegistrationDate) VALUES (2, 2, 2, '2024-08-05');
+
+-- Query to retrieve event details with venue names
+SELECT e.EventID, e.EventName, e.EventDate, v.VenueName
+FROM Events e
+JOIN Venues v ON e.VenueID = v.VenueID;
+
+-- Query to retrieve attendees registered for a specific event
+SELECT a.AttendeeName, a.Email
+FROM Attendees a
+JOIN Registrations r ON a.AttendeeID = r.AttendeeID
+WHERE r.EventID = 1;
+
+
+/*
+EXPLANATION OF THE CODE
+
+The SQL script creates a database schema for an Event Management System.
+It defines four tables: Events, Venues, Attendees, and Registrations.
+The Events table contains details about events, with a foreign key VenueID linking to the Venues table.
+The Venues table stores information about venues.
+The Attendees table contains details about attendees with a unique email address.
+The Registrations table links attendees to events with registration details and includes foreign keys for both EventID and AttendeeID.
+Sample data is inserted into each table to provide examples.
+Two SQL queries are provided:
+The first query retrieves event details along with venue names.
+The second query lists attendees registered for a specific event.
+
+*/
+
+
+/*
+NOTIONS COVERED
+
+Describe the components of a database system: Tables for managing events, venues, attendees, and registrations.
+Describe types of database models: Relational model used with tables and foreign keys.
+Describe the characteristics of a relational database: Use of primary and foreign keys, normalization, and relationships between tables.
+Define the terminology used for database storage: Creation of tables and insertion of data.
+Describe levels of data abstraction used in relational databases: Physical model creation with SQL DDL statements.
+Describe a conceptual data model: Entity-Relationship modeling for event management.
+Using Unique Identifiers, Primary and Foreign Keys: Definition and use of primary and foreign keys.
+Identify relationships: One-to-many relationships between events and venues, attendees and registrations.
+Mapping Entities, Columns and Data Types: Mapping entities from ERD to tables with appropriate data types.
+Defining and using Basic Select statements: SQL queries for retrieving and joining data.
+Defining Table Joins: Using joins to combine data from multiple tables.
+*/
+
