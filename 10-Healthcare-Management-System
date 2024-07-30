@@ -1,0 +1,122 @@
+-- This script creates tables for managing a healthcare system including patients, doctors, appointments, and medical records.
+-- It also inserts sample data into these tables and demonstrates basic SQL queries to retrieve and manage the data.
+
+-- Creating the 'Patients' table to store patient information
+CREATE TABLE Patients (
+    PatientID INT PRIMARY KEY, -- Unique identifier for each patient
+    FirstName VARCHAR(50), -- Patient's first name
+    LastName VARCHAR(50), -- Patient's last name
+    DateOfBirth DATE, -- Patient's date of birth
+    Gender CHAR(1), -- Patient's gender (M/F)
+    PhoneNumber VARCHAR(15) -- Patient's phone number
+);
+
+-- Creating the 'Doctors' table to store doctor information
+CREATE TABLE Doctors (
+    DoctorID INT PRIMARY KEY, -- Unique identifier for each doctor
+    FirstName VARCHAR(50), -- Doctor's first name
+    LastName VARCHAR(50), -- Doctor's last name
+    Specialty VARCHAR(100), -- Doctor's medical specialty
+    PhoneNumber VARCHAR(15) -- Doctor's phone number
+);
+
+-- Creating the 'Appointments' table to store appointment details
+CREATE TABLE Appointments (
+    AppointmentID INT PRIMARY KEY, -- Unique identifier for each appointment
+    PatientID INT, -- Foreign key linking to the Patients table
+    DoctorID INT, -- Foreign key linking to the Doctors table
+    AppointmentDate DATE, -- Date of the appointment
+    AppointmentTime TIME, -- Time of the appointment
+    FOREIGN KEY (PatientID) REFERENCES Patients(PatientID), -- Link to the Patients table
+    FOREIGN KEY (DoctorID) REFERENCES Doctors(DoctorID) -- Link to the Doctors table
+);
+
+-- Creating the 'MedicalRecords' table to store patient medical records
+CREATE TABLE MedicalRecords (
+    RecordID INT PRIMARY KEY, -- Unique identifier for each medical record
+    PatientID INT, -- Foreign key linking to the Patients table
+    RecordDate DATE, -- Date of the medical record
+    Diagnosis VARCHAR(255), -- Diagnosis details
+    Treatment VARCHAR(255), -- Treatment details
+    FOREIGN KEY (PatientID) REFERENCES Patients(PatientID) -- Link to the Patients table
+);
+
+-- Inserting sample data into the 'Patients' table
+INSERT INTO Patients (PatientID, FirstName, LastName, DateOfBirth, Gender, PhoneNumber)
+VALUES 
+    (1, 'John', 'Doe', '1980-05-15', 'M', '123-456-7890'),
+    (2, 'Jane', 'Smith', '1990-09-22', 'F', '234-567-8901');
+
+-- Inserting sample data into the 'Doctors' table
+INSERT INTO Doctors (DoctorID, FirstName, LastName, Specialty, PhoneNumber)
+VALUES 
+    (1, 'Alice', 'Johnson', 'Cardiology', '345-678-9012'),
+    (2, 'Bob', 'Williams', 'Dermatology', '456-789-0123');
+
+-- Inserting sample data into the 'Appointments' table
+INSERT INTO Appointments (AppointmentID, PatientID, DoctorID, AppointmentDate, AppointmentTime)
+VALUES 
+    (1, 1, 1, '2024-08-01', '09:00:00'),
+    (2, 2, 2, '2024-08-02', '10:00:00');
+
+-- Inserting sample data into the 'MedicalRecords' table
+INSERT INTO MedicalRecords (RecordID, PatientID, RecordDate, Diagnosis, Treatment)
+VALUES 
+    (1, 1, '2024-08-01', 'High Blood Pressure', 'Medication and Lifestyle Changes'),
+    (2, 2, '2024-08-02', 'Skin Rash', 'Topical Cream');
+
+-- Query to retrieve all patients and their appointments
+SELECT 
+    p.FirstName AS PatientFirstName, 
+    p.LastName AS PatientLastName, 
+    d.FirstName AS DoctorFirstName, 
+    d.LastName AS DoctorLastName, 
+    a.AppointmentDate, 
+    a.AppointmentTime
+FROM 
+    Appointments a
+JOIN 
+    Patients p ON a.PatientID = p.PatientID
+JOIN 
+    Doctors d ON a.DoctorID = d.DoctorID;
+
+-- Query to retrieve medical records for a specific patient
+SELECT 
+    p.FirstName AS PatientFirstName, 
+    p.LastName AS PatientLastName, 
+    m.RecordDate, 
+    m.Diagnosis, 
+    m.Treatment
+FROM 
+    MedicalRecords m
+JOIN 
+    Patients p ON m.PatientID = p.PatientID
+WHERE 
+    p.PatientID = 1;
+
+
+/*
+EXPLANATION OF THE CODE
+
+The code starts with comments explaining that it creates tables for a healthcare system, inserts sample data, and demonstrates basic SQL queries.
+It creates the Patients table with columns for patient details including a primary key PatientID.
+It creates the Doctors table with columns for doctor details and a primary key DoctorID.
+It creates the Appointments table with columns for appointment details, including foreign keys to Patients and Doctors.
+It creates the MedicalRecords table with columns for medical records details and a foreign key to Patients.
+It inserts sample data into the Patients, Doctors, Appointments, and MedicalRecords tables.
+It provides an SQL query to retrieve patient names along with their appointment details.
+It provides another SQL query to retrieve medical records for a specific patient.
+*/
+
+
+/*
+NOTIONS COVERED
+
+Database Components: Creating tables and defining relationships.
+Conceptual Data Modeling: Designing the schema with tables and relationships.
+Unique Identifiers: Using primary keys for PatientID, DoctorID, AppointmentID, and RecordID.
+Foreign Keys: Linking Appointments and MedicalRecords to Patients and Doctors.
+Normalization: Structuring tables to avoid data redundancy.
+SQL Queries: Using SELECT statements, JOINs, and WHERE clauses to retrieve data.
+Data Types: Defining appropriate data types for various columns.
+*/
