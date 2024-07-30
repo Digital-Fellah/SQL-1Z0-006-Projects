@@ -1,0 +1,60 @@
+-- This script creates the tables for a Customer Relationship Management (CRM) system.
+-- It includes tables for Customers, Sales, Support Tickets, and Interactions.
+
+-- Create the Customers table
+CREATE TABLE Customers (
+    CustomerID INT PRIMARY KEY, -- Unique identifier for each customer
+    FirstName VARCHAR(50), -- First name of the customer
+    LastName VARCHAR(50), -- Last name of the customer
+    Email VARCHAR(100), -- Email address of the customer
+    Phone VARCHAR(15) -- Phone number of the customer
+);
+
+-- Create the Sales table
+CREATE TABLE Sales (
+    SalesID INT PRIMARY KEY, -- Unique identifier for each sale
+    CustomerID INT, -- Identifier for the customer making the sale
+    SaleDate DATE, -- Date of the sale
+    Amount DECIMAL(10, 2), -- Amount of the sale
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID) -- Links to the Customers table
+);
+
+-- Create the SupportTickets table
+CREATE TABLE SupportTickets (
+    TicketID INT PRIMARY KEY, -- Unique identifier for each support ticket
+    CustomerID INT, -- Identifier for the customer who raised the ticket
+    IssueDescription TEXT, -- Description of the issue
+    TicketDate DATE, -- Date the ticket was raised
+    Status VARCHAR(20), -- Current status of the ticket (e.g., Open, Closed)
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID) -- Links to the Customers table
+);
+
+-- Create the Interactions table
+CREATE TABLE Interactions (
+    InteractionID INT PRIMARY KEY, -- Unique identifier for each interaction
+    CustomerID INT, -- Identifier for the customer involved in the interaction
+    InteractionDate DATE, -- Date of the interaction
+    InteractionType VARCHAR(20), -- Type of interaction (e.g., Email, Phone Call)
+    Notes TEXT, -- Notes about the interaction
+    FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID) -- Links to the Customers table
+);
+
+
+/*
+EXPLANATION OF THE CODE
+
+Customer Table Creation: Defines a table named Customers with fields for storing customer details such as CustomerID, FirstName, LastName, Email, and Phone.
+Sales Table Creation: Defines a table named Sales that records each sale, with fields for SalesID, CustomerID, SaleDate, and Amount. It also creates a foreign key relationship with the Customers table.
+SupportTickets Table Creation: Defines a table named SupportTickets to manage customer support issues. It includes TicketID, CustomerID, IssueDescription, TicketDate, and Status, with a foreign key linking to the Customers table.
+Interactions Table Creation: Defines a table named Interactions to log interactions with customers. It contains fields like InteractionID, CustomerID, InteractionDate, InteractionType, and Notes, with a foreign key relationship to the Customers table.
+*/
+
+
+/*
+NOTIONS COVERED
+
+Defining Tables in a Database: Creating tables with various fields and primary keys.
+Using Unique Identifiers, Primary and Foreign Keys: Defining primary keys for tables and setting up foreign key relationships.
+Data Modeling: Structuring tables to represent a CRM system with relevant relationships.
+Normalization: Ensuring that the database structure avoids redundancy and maintains data integrity by linking tables through foreign keys.
+*/
