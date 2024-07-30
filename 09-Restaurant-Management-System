@@ -1,0 +1,83 @@
+-- This SQL script sets up a basic restaurant management system database.
+-- It creates tables for menu items, orders, tables, and order details.
+
+-- Create table for menu items
+CREATE TABLE MenuItems (
+    MenuItemID INT PRIMARY KEY,           -- Unique identifier for each menu item
+    Name VARCHAR(100) NOT NULL,           -- Name of the menu item
+    Price DECIMAL(10, 2) NOT NULL,        -- Price of the menu item
+    Category VARCHAR(50)                  -- Category of the menu item (e.g., Appetizer, Main Course)
+);
+
+-- Create table for restaurant tables
+CREATE TABLE Tables (
+    TableID INT PRIMARY KEY,              -- Unique identifier for each table
+    TableNumber INT NOT NULL,             -- Table number for easy reference
+    Seats INT NOT NULL                    -- Number of seats at the table
+);
+
+-- Create table for orders
+CREATE TABLE Orders (
+    OrderID INT PRIMARY KEY,              -- Unique identifier for each order
+    TableID INT,                          -- Foreign key referencing the Tables table
+    OrderDate DATETIME NOT NULL,          -- Date and time when the order was placed
+    TotalAmount DECIMAL(10, 2) NOT NULL,  -- Total amount for the order
+    FOREIGN KEY (TableID) REFERENCES Tables(TableID)  -- Foreign key constraint
+);
+
+-- Create table for order details
+CREATE TABLE OrderDetails (
+    OrderDetailID INT PRIMARY KEY,        -- Unique identifier for each order detail
+    OrderID INT,                          -- Foreign key referencing the Orders table
+    MenuItemID INT,                       -- Foreign key referencing the MenuItems table
+    Quantity INT NOT NULL,                -- Quantity of the menu item ordered
+    UnitPrice DECIMAL(10, 2) NOT NULL,    -- Price per unit of the menu item
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),  -- Foreign key constraint
+    FOREIGN KEY (MenuItemID) REFERENCES MenuItems(MenuItemID)  -- Foreign key constraint
+);
+
+-- Insert sample data into MenuItems table
+INSERT INTO MenuItems (MenuItemID, Name, Price, Category) VALUES
+(1, 'Cheeseburger', 8.99, 'Main Course'),
+(2, 'Caesar Salad', 6.49, 'Appetizer'),
+(3, 'Chocolate Cake', 4.99, 'Dessert');
+
+-- Insert sample data into Tables table
+INSERT INTO Tables (TableID, TableNumber, Seats) VALUES
+(1, 1, 4),
+(2, 2, 2),
+(3, 3, 6);
+
+-- Insert sample data into Orders table
+INSERT INTO Orders (OrderID, TableID, OrderDate, TotalAmount) VALUES
+(1, 1, '2024-07-30 18:30:00', 24.97),
+(2, 2, '2024-07-30 19:00:00', 15.47);
+
+-- Insert sample data into OrderDetails table
+INSERT INTO OrderDetails (OrderDetailID, OrderID, MenuItemID, Quantity, UnitPrice) VALUES
+(1, 1, 1, 2, 8.99),  -- 2 Cheeseburgers for Order 1
+(2, 1, 2, 1, 6.49),  -- 1 Caesar Salad for Order 1
+(3, 2, 3, 1, 4.99);  -- 1 Chocolate Cake for Order 2
+
+
+/*
+EXPLANATION OF THE CODE
+
+The script begins by creating a table named MenuItems to store details about the menu items available in the restaurant. This table includes columns for the unique identifier (MenuItemID), name, price, and category of each item.
+Next, the script creates a table called Tables to keep track of the restaurant's tables. It includes columns for a unique table identifier (TableID), table number, and the number of seats.
+The Orders table is created to manage customer orders. It includes columns for a unique order identifier (OrderID), the table where the order was placed (TableID), the date and time of the order (OrderDate), and the total amount of the order.
+The OrderDetails table is designed to provide detailed information about the items included in each order. It contains columns for a unique detail identifier (OrderDetailID), the order it belongs to (OrderID), the menu item (MenuItemID), quantity, and unit price.
+Sample data is inserted into each table to demonstrate the setup. This includes sample menu items, tables, orders, and order details.
+*/
+
+
+/*
+NOTIONS COVERED
+
+Database Components: Creation of tables for managing menu items, tables, orders, and order details.
+Tables: Structure and relationships among MenuItems, Tables, Orders, and OrderDetails.
+Unique Identifiers: Use of primary keys for MenuItemID, TableID, OrderID, and OrderDetailID.
+Foreign Keys: Establishment of foreign key relationships between Orders, Tables, and OrderDetails.
+Data Types: Selection of appropriate data types for different columns (e.g., VARCHAR, DECIMAL, DATETIME).
+Normalization: Designing the schema to reduce redundancy and ensure data integrity.
+*/
