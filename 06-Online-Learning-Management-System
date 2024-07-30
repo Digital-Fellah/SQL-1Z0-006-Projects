@@ -1,0 +1,76 @@
+-- This SQL code sets up a database for an Online Learning Management System
+-- It includes tables for Courses, Students, Instructors, and Enrollments
+
+-- Create the Courses table
+CREATE TABLE Courses (
+    CourseID INT PRIMARY KEY, -- Unique identifier for each course
+    CourseName VARCHAR(100) NOT NULL, -- Name of the course
+    Credits INT NOT NULL -- Number of credits for the course
+);
+
+-- Create the Students table
+CREATE TABLE Students (
+    StudentID INT PRIMARY KEY, -- Unique identifier for each student
+    StudentName VARCHAR(100) NOT NULL, -- Name of the student
+    EnrollmentDate DATE NOT NULL -- Date when the student enrolled
+);
+
+-- Create the Instructors table
+CREATE TABLE Instructors (
+    InstructorID INT PRIMARY KEY, -- Unique identifier for each instructor
+    InstructorName VARCHAR(100) NOT NULL, -- Name of the instructor
+    HireDate DATE NOT NULL -- Date when the instructor was hired
+);
+
+-- Create the Enrollments table
+CREATE TABLE Enrollments (
+    EnrollmentID INT PRIMARY KEY, -- Unique identifier for each enrollment
+    StudentID INT, -- ID of the student enrolled
+    CourseID INT, -- ID of the course
+    EnrollmentDate DATE NOT NULL, -- Date when the enrollment happened
+    FOREIGN KEY (StudentID) REFERENCES Students(StudentID), -- Link to Students table
+    FOREIGN KEY (CourseID) REFERENCES Courses(CourseID) -- Link to Courses table
+);
+
+-- Insert sample data into the Courses table
+INSERT INTO Courses (CourseID, CourseName, Credits) VALUES
+(1, 'Introduction to Databases', 3),
+(2, 'Advanced SQL', 4);
+
+-- Insert sample data into the Students table
+INSERT INTO Students (StudentID, StudentName, EnrollmentDate) VALUES
+(1, 'Alice Smith', '2024-01-15'),
+(2, 'Bob Johnson', '2024-02-20');
+
+-- Insert sample data into the Instructors table
+INSERT INTO Instructors (InstructorID, InstructorName, HireDate) VALUES
+(1, 'Dr. Emily Davis', '2023-08-01'),
+(2, 'Mr. John Lee', '2023-09-15');
+
+-- Insert sample data into the Enrollments table
+INSERT INTO Enrollments (EnrollmentID, StudentID, CourseID, EnrollmentDate) VALUES
+(1, 1, 1, '2024-01-20'),
+(2, 2, 2, '2024-02-25');
+
+
+/*
+EXPLANATION OF THE CODE
+
+The code creates a database for an Online Learning Management System with four tables: Courses, Students, Instructors, and Enrollments.
+Courses Table: Stores information about courses, including a unique identifier (CourseID), course name, and credits.
+Students Table: Stores information about students, including a unique identifier (StudentID), student name, and enrollment date.
+Instructors Table: Stores information about instructors, including a unique identifier (InstructorID), instructor name, and hire date.
+Enrollments Table: Manages the relationships between students and courses, including a unique identifier (EnrollmentID), student ID, course ID, and enrollment date. This table uses foreign keys to link to the Students and Courses tables.
+Inserting Data: Adds sample data into each table to demonstrate how the database might be used.
+*/
+
+
+/*
+NOTIONS COVERED
+
+Database Components: Designing and creating tables.
+Defining a Table in a Database: Structure of tables, including columns and data types.
+Using Unique Identifiers, Primary and Foreign Keys: Implementing primary keys and foreign keys.
+Mapping Entities, Columns and Data Types: Mapping entities to tables and defining column data types.
+Using Structured Query Language (SQL): Creating tables, inserting data, and using SQL commands to manage the database.
+*/
