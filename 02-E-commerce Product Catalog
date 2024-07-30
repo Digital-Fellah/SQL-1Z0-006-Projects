@@ -1,0 +1,79 @@
+-- This SQL script creates an e-commerce product catalog database with tables for products, categories, and reviews.
+-- It also demonstrates how to create relationships between these tables using primary and foreign keys.
+
+-- Create the 'Categories' table to store product categories
+CREATE TABLE Categories (
+    CategoryID INT PRIMARY KEY,  -- Unique identifier for each category
+    CategoryName VARCHAR(100) NOT NULL  -- Name of the category
+);
+
+-- Create the 'Products' table to store information about products
+CREATE TABLE Products (
+    ProductID INT PRIMARY KEY,  -- Unique identifier for each product
+    ProductName VARCHAR(100) NOT NULL,  -- Name of the product
+    Price DECIMAL(10, 2) NOT NULL,  -- Price of the product
+    CategoryID INT,  -- Foreign key to reference the category of the product
+    CONSTRAINT FK_Category FOREIGN KEY (CategoryID) REFERENCES Categories(CategoryID)  -- Establishing foreign key relationship
+);
+
+-- Create the 'Reviews' table to store product reviews
+CREATE TABLE Reviews (
+    ReviewID INT PRIMARY KEY,  -- Unique identifier for each review
+    ProductID INT,  -- Foreign key to reference the product being reviewed
+    ReviewText TEXT,  -- Content of the review
+    Rating INT CHECK (Rating BETWEEN 1 AND 5),  -- Rating given to the product (1 to 5 scale)
+    CONSTRAINT FK_Product FOREIGN KEY (ProductID) REFERENCES Products(ProductID)  -- Establishing foreign key relationship
+);
+
+-- Insert sample data into the 'Categories' table
+INSERT INTO Categories (CategoryID, CategoryName) VALUES (1, 'Electronics');
+INSERT INTO Categories (CategoryID, CategoryName) VALUES (2, 'Books');
+
+-- Insert sample data into the 'Products' table
+INSERT INTO Products (ProductID, ProductName, Price, CategoryID) VALUES (1, 'Smartphone', 699.99, 1);
+INSERT INTO Products (ProductID, ProductName, Price, CategoryID) VALUES (2, 'Laptop', 1299.99, 1);
+INSERT INTO Products (ProductID, ProductName, Price, CategoryID) VALUES (3, 'Mystery Novel', 14.99, 2);
+
+-- Insert sample data into the 'Reviews' table
+INSERT INTO Reviews (ReviewID, ProductID, ReviewText, Rating) VALUES (1, 1, 'Great phone with amazing battery life!', 5);
+INSERT INTO Reviews (ReviewID, ProductID, ReviewText, Rating) VALUES (2, 2, 'High performance but a bit expensive.', 4);
+INSERT INTO Reviews (ReviewID, ProductID, ReviewText, Rating) VALUES (3, 3, 'An engaging read. Highly recommended!', 5);
+
+-- Query to retrieve all products along with their category names
+SELECT p.ProductName, p.Price, c.CategoryName
+FROM Products p
+JOIN Categories c ON p.CategoryID = c.CategoryID;
+
+-- Query to retrieve all reviews for a specific product, including the product name and review details
+SELECT p.ProductName, r.ReviewText, r.Rating
+FROM Reviews r
+JOIN Products p ON r.ProductID = p.ProductID
+WHERE p.ProductID = 1;
+
+
+/*
+EXPLANATION OF THE CODE
+
+The code creates a database schema for an e-commerce product catalog.
+It defines three tables: Categories, Products, and Reviews.
+The Categories table stores different product categories.
+The Products table contains information about products, including a foreign key reference to the Categories table.
+The Reviews table includes product reviews with a foreign key reference to the Products table.
+Sample data is inserted into all three tables to illustrate usage.
+SQL queries are provided to demonstrate how to retrieve product details with category names and how to get reviews for a specific product.
+
+*/
+
+
+/*
+NOTIONS COVERED
+
+Defining a Table in a Database: Creation of Categories, Products, and Reviews tables.
+Using Unique Identifiers, Primary and Foreign Keys: Implementation of primary keys and foreign key constraints.
+Mapping Entities, Columns, and Data Types: Mapping entities (tables) to columns with appropriate data types.
+Defining and Using Basic Select Statements: Retrieval of data using SQL SELECT statements and joins.
+Defining Table Joins: Joining Products with Categories and Reviews to retrieve relevant information.
+
+*/
+
+
