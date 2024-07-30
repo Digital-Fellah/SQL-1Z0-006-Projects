@@ -1,0 +1,90 @@
+-- This SQL script creates a database for tracking employee work hours, projects, and tasks.
+-- It includes tables for employees, projects, tasks, and time logs with necessary relationships.
+
+-- Create the table for storing employee details
+CREATE TABLE Employees (
+    EmployeeID INT PRIMARY KEY,  -- Unique identifier for each employee
+    FirstName VARCHAR(50),       -- Employee's first name
+    LastName VARCHAR(50),        -- Employee's last name
+    HireDate DATE                -- Date when the employee was hired
+);
+
+-- Create the table for storing project details
+CREATE TABLE Projects (
+    ProjectID INT PRIMARY KEY,   -- Unique identifier for each project
+    ProjectName VARCHAR(100),    -- Name of the project
+    StartDate DATE,              -- Start date of the project
+    EndDate DATE                 -- End date of the project
+);
+
+-- Create the table for storing task details
+CREATE TABLE Tasks (
+    TaskID INT PRIMARY KEY,      -- Unique identifier for each task
+    TaskDescription VARCHAR(255), -- Description of the task
+    ProjectID INT,               -- ID of the project this task belongs to
+    FOREIGN KEY (ProjectID) REFERENCES Projects(ProjectID) -- Foreign key referencing Projects table
+);
+
+-- Create the table for logging employee hours worked on tasks
+CREATE TABLE TimeLogs (
+    LogID INT PRIMARY KEY,       -- Unique identifier for each log entry
+    EmployeeID INT,              -- ID of the employee who worked on the task
+    TaskID INT,                  -- ID of the task the employee worked on
+    HoursWorked DECIMAL(5, 2),   -- Number of hours worked on the task
+    LogDate DATE,                -- Date when the work was logged
+    FOREIGN KEY (EmployeeID) REFERENCES Employees(EmployeeID), -- Foreign key referencing Employees table
+    FOREIGN KEY (TaskID) REFERENCES Tasks(TaskID)  -- Foreign key referencing Tasks table
+);
+
+-- Insert sample data into Employees table
+INSERT INTO Employees (EmployeeID, FirstName, LastName, HireDate)
+VALUES (1, 'John', 'Doe', '2023-01-15'),
+       (2, 'Jane', 'Smith', '2023-03-22');
+
+-- Insert sample data into Projects table
+INSERT INTO Projects (ProjectID, ProjectName, StartDate, EndDate)
+VALUES (1, 'Project Alpha', '2024-01-01', '2024-06-30'),
+       (2, 'Project Beta', '2024-02-15', '2024-07-15');
+
+-- Insert sample data into Tasks table
+INSERT INTO Tasks (TaskID, TaskDescription, ProjectID)
+VALUES (1, 'Design Database Schema', 1),
+       (2, 'Develop API', 2);
+
+-- Insert sample data into TimeLogs table
+INSERT INTO TimeLogs (LogID, EmployeeID, TaskID, HoursWorked, LogDate)
+VALUES (1, 1, 1, 8.0, '2024-01-10'),
+       (2, 2, 2, 6.5, '2024-03-01');
+
+-- Query to retrieve hours worked per employee on each task
+SELECT E.FirstName, E.LastName, T.TaskDescription, SUM(L.HoursWorked) AS TotalHours
+FROM TimeLogs L
+JOIN Employees E ON L.EmployeeID = E.EmployeeID
+JOIN Tasks T ON L.TaskID = T.TaskID
+GROUP BY E.FirstName, E.LastName, T.TaskDescription;
+
+
+/*
+EXPLANATION OF THE CODE
+
+The code creates a database schema for an employee time tracking system.
+Employees Table: Stores employee details with EmployeeID as the primary key.
+Projects Table: Stores project details with ProjectID as the primary key.
+Tasks Table: Stores tasks with TaskID as the primary key and a foreign key ProjectID linking to the Projects table.
+TimeLogs Table: Logs the hours employees work on tasks, with LogID as the primary key and foreign keys linking to Employees and Tasks tables.
+Sample Data Insertion: Adds sample records to the Employees, Projects, Tasks, and TimeLogs tables.
+Query: Retrieves and sums up the total hours worked by each employee on different tasks.
+*/
+
+
+/*
+NOTIONS COVERED
+
+Database Components: Table creation and relationships.
+Tables: Structure and definition of Employees, Projects, Tasks, and TimeLogs tables.
+Conceptual Data Modeling: Designing an ERD to represent entities and relationships.
+Unique Identifiers: Primary keys for all tables.
+Foreign Keys: Linking Tasks to Projects and TimeLogs to Employees and Tasks.
+SQL: Creating tables, inserting data, and querying data with joins and aggregations.
+Normalization: Ensuring a normalized structure to avoid data redundancy.
+*/
