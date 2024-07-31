@@ -4,17 +4,21 @@ What is a Database?
 
 Database Concepts               
 - Describe the components of a database system               
-- Explain the purpose of a database          
+- Explain the purpose of a database
+         
 Types of  Databases Models      
 - Describe types of database models (relational, object oriented, flat, network…)               
-- Compare the differences between the different types of databases      
+- Compare the differences between the different types of databases
+
 Relational Database Concepts  
 - Describe the characteristics of a relational database       
 - Explain the importance of relational databases in business          
-- List the major transformations in database technology  
+- List the major transformations in database technology
+
 Defining Levels of Data Abstraction       
 - Define the terminology used for database storage          
 - Describe levels of data abstraction used in relational databases
+
 Gathering Requirements for Database Design  
 - Gather requirements to implement a database solution
 - Explain business rules   
